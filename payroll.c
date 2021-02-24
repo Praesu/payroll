@@ -1,8 +1,59 @@
 #include <stdio.h>
 
+typedef struct {
+	char fname[25];
+	char mname[25];
+	char lname[25];
+}name;
+
+typedef struct {
+	int day;
+	int month;
+	int year;
+}date;
+
+typedef struct {
+	int empID;
+	name empName;
+	char Address[50];
+	int Age;
+	date DoB;
+	char Sex;
+	int ContactNo;
+	char email[25];
+} PersonalInfo;
+
+typedef struct {
+	double SSS;
+	double Philhealth;
+	double PagIbig;
+	double Withholding;
+	double VALE;
+	double SSSLoan;
+	double PagIbigLoan;
+	double others;
+} Deductions;
+
+typedef struct {
+	PersonalInfo info;
+	char Department[15];
+	char Position[15];
+	double PositionRate;
+	double BasicSalary;
+	double OvertimePay;
+	double Allowance;
+	double Less;
+	Deductions deduct;
+} EmployeeInfo;
+
+void viewEmpList();
+void calculatePayroll();
+void dayInputs();
+void settings();
+
 int main()
 {
-    int a;
+    int a = 0;
     
     printf("1. View Employee List\n");
     printf("2. Calculate Payroll\n");
@@ -10,9 +61,51 @@ int main()
     printf("4. Settings\n");
     printf("5. Exit\n");
 
-    printf("What do you want to do? Enter number: ");
-    scanf("%d", &a);
+    while(a != 5) {
+        printf("\nWhat do you want to do? Enter number: ");
+        scanf("%d", &a);
 
+        switch (a) {
+            case 1: 
+                viewEmpList();
+                break;
+            case 2:
+                calculatePayroll();
+                break;
+            case 3:
+                dayInputs();
+                break;
+            case 4:
+                settings();
+                break;
+            case 5:
+            	printf("Exiting!");
+            	break;
+            default:
+                printf("Error, please input correctly!");
+                break;
+        }
+    }
 
     return 0;
+}
+
+void viewEmpList()
+{
+	printf("\nView employee!");
+}
+
+void calculatePayroll()
+{
+	printf("\nCalculate!");
+}
+
+void dayInputs()
+{
+	printf("\nDay Inputs!");
+}
+
+void settings()
+{
+	printf("\nSettings!");
 }
