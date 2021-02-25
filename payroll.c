@@ -59,20 +59,20 @@ int main()
     char password[10] ="\0";
     
     
-do{
-printf("**************** LOGIN ******************\n");
-if(username[0]!='\0' && password[0]!='\0' && loginFlag==0){
-	printf("Incorrent Username or Password.\n");
-	}
-	printf("\nEnter username:");
-    scanf("%s",username);
-    printf("Enter password:");
-    scanf("%s",password);
-    loginFlag = (strcmp(username,"admin")==0 && strcmp(password,"12345")==0)? 1:0;
+    do{
+	printf("**************** LOGIN ******************\n");
+	if(username[0]!='\0' && password[0]!='\0' && loginFlag==0){
+		printf("Incorrent Username or Password.\n");
+		}
+		printf("\nEnter username:");
+	    scanf("%s",username);
+	    printf("Enter password:");
+	    scanf("%s",password);
+	    loginFlag = (strcmp(username,"admin")==0 && strcmp(password,"12345")==0)? 1:0;
 
-    system("CLS");
+	    system("CLS");
 
-}while(loginFlag==0);
+    }while(loginFlag==0);
     
     if(loginFlag==1){
     	
