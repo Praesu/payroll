@@ -92,7 +92,8 @@ int main()
 	L = populateList();
 
     while(a != 5) {
-    	printf("1. View Employee List\n");
+    	a = 0;
+    	printf("\n\n1. View Employee List\n");
 	    printf("2. Calculate Payroll\n");
 	    printf("3. End of day inputs\n");
 	    printf("4. Settings\n");
@@ -287,6 +288,7 @@ void viewEmpList(EmpList *L)
     displayEmpList(*L);
 
     while(a != 4) {
+    	a = 0;
     	printf("\n\n1. Create New Employee\n");
 	    printf("2. Update Employee\n");
 	    printf("3. Delete Employee\n");
@@ -320,40 +322,41 @@ void createNewEmp(EmpList *L)
 	char confirm;
 	EmployeeInfo e;
 
-	printf("Last name: "); 						scanf("%s", &e.info.empName.lname); 	fflush(stdin);
-	printf("\nFirst name: "); 					scanf("%s", &e.info.empName.fname);		fflush(stdin);
-	printf("\nMiddle name: "); 					scanf("%s", &e.info.empName.mname);		fflush(stdin);
-	printf("\nAddress: "); 						scanf("%s", &e.info.Address);			fflush(stdin);
+	printf("Last name: "); 						scanf("%s", &e.info.empName.lname); 	strupr(e.info.empName.lname);		fflush(stdin); 
+	printf("\nFirst name: "); 					scanf("%s", &e.info.empName.fname);		strupr(e.info.empName.fname);		fflush(stdin);
+	printf("\nMiddle name: "); 					scanf("%s", &e.info.empName.mname);		strupr(e.info.empName.mname);		fflush(stdin);
+	printf("\nAddress: "); 						scanf("%s", &e.info.Address);			strupr(e.info.Address);				fflush(stdin);
 	printf("\nAge: "); 						 	scanf("%d", &e.info.Age);				fflush(stdin);
 	printf("\nDate of Birth: [mm-dd-yyyy] "); 	scanf("%2d-%2d-%4d", &e.info.DoB.month, &e.info.DoB.day, &e.info.DoB.year);	fflush(stdin);
-	printf("\nSex: [F/M] "); 					scanf("%c", &e.info.Sex);				fflush(stdin);
-	printf("\nContact number: "); 				scanf("%f", &e.info.ContactNo);			fflush(stdin);
+	printf("\nSex: [F/M] "); 					scanf("%c", &e.info.Sex);				e.info.Sex = toupper(e.info.Sex);	fflush(stdin);
+	printf("\nContact number: "); 				scanf("%lf", &e.info.ContactNo);			fflush(stdin);
 	printf("\nEmail: "); 						scanf("%s", &e.info.email);				fflush(stdin);
-	printf("\nDepartment: "); 					scanf("%s", &e.Department); 			fflush(stdin);
-	printf("\nPosition: "); 					scanf("%s", &e.Position); 				fflush(stdin);	
+	printf("\nDepartment: "); 					scanf("%s", &e.Department); 			strupr(e.Department);				fflush(stdin);
+	printf("\nPosition: "); 					scanf("%s", &e.Position); 				strupr(e.Position);					fflush(stdin);	
 	printf("\nMin. Late: "); 					scanf("%d", &e.minLate);  				fflush(stdin);
 	printf("\nAbsences: "); 					scanf("%d", &e.Absence);  				fflush(stdin);
-	printf("\nPosition Rate: "); 				scanf("%.2f", &e.PositionRate);  		fflush(stdin);
-	printf("\nBasic Salary: "); 				scanf("%.2f", &e.BasicSalary); 	 		fflush(stdin);
-	printf("\nOvertime Pay: "); 				scanf("%.2f", &e.OvertimePay); 			fflush(stdin);
-	printf("\nAllowance: "); 					scanf("%.2f", &e.Allowance); 			fflush(stdin);
-	printf("\nLess: "); 						scanf("%.2f", &e.Less); 				fflush(stdin);
-	printf("\nNet Amount Paid: "); 				scanf("%.2f", &e.netAmtPd); 			fflush(stdin);
-	printf("\nSSS: "); 							scanf("%.2f", &e.deduct.SSS); 			fflush(stdin);
-	printf("\nPhilHealth: "); 					scanf("%.2f", &e.deduct.Philhealth); 	fflush(stdin);
-	printf("\nPag-Ibig: "); 					scanf("%.2f", &e.deduct.PagIbig); 		fflush(stdin);
-	printf("\nWithholding: "); 					scanf("%.2f", &e.deduct.Withholding); 	fflush(stdin);
-	printf("\nVALE: "); 						scanf("%.2f", &e.deduct.VALE); 			fflush(stdin);
-	printf("\nSSS loan: "); 					scanf("%.2f", &e.deduct.SSSLoan); 		fflush(stdin);
-	printf("\nPag-ibig Loan: "); 				scanf("%.2f", &e.deduct.PagIbigLoan); 	fflush(stdin);
-	printf("\nothers: "); 						scanf("%.2f", &e.deduct.others);		fflush(stdin);
+	printf("\nPosition Rate: "); 				scanf("%lf", &e.PositionRate);  		fflush(stdin);
+	printf("\nBasic Salary: "); 				scanf("%lf", &e.BasicSalary); 	 		fflush(stdin);
+	printf("\nOvertime Pay: "); 				scanf("%lf", &e.OvertimePay); 			fflush(stdin);
+	printf("\nAllowance: "); 					scanf("%lf", &e.Allowance); 			fflush(stdin);
+	printf("\nLess: "); 						scanf("%lf", &e.Less); 					fflush(stdin);
+	printf("\nNet Amount Paid: "); 				scanf("%lf", &e.netAmtPd); 				fflush(stdin);
+	printf("\nSSS: "); 							scanf("%lf", &e.deduct.SSS); 			fflush(stdin);
+	printf("\nPhilHealth: "); 					scanf("%lf", &e.deduct.Philhealth); 	fflush(stdin);
+	printf("\nPag-Ibig: "); 					scanf("%lf", &e.deduct.PagIbig); 		fflush(stdin);
+	printf("\nWithholding: "); 					scanf("%lf", &e.deduct.Withholding); 	fflush(stdin);
+	printf("\nVALE: "); 						scanf("%lf", &e.deduct.VALE); 			fflush(stdin);
+	printf("\nSSS loan: "); 					scanf("%lf", &e.deduct.SSSLoan); 		fflush(stdin);
+	printf("\nPag-ibig Loan: "); 				scanf("%lf", &e.deduct.PagIbigLoan); 	fflush(stdin);
+	printf("\nothers: "); 						scanf("%lf", &e.deduct.others);			fflush(stdin);
 	
 	printf("Are all the details correct? [Y/N] ");	
 	fflush(stdin);
 	scanf("%c", &confirm);
+	confirm = toupper(confirm);
 	
-	if(confirm == 'y' || confirm == 'Y') {
-		e.empID = L->count;
+	if(confirm == 'Y') {
+		e.empID = L->count + 1;
 		insertSorted(L, e);
 		writeEmpList(*L);
 	}	
@@ -376,145 +379,156 @@ void writeEmpList(EmpList L)
 
 void updateEmp(EmpList *L)
 {
-	int id, ctr;
+	int ctr;
+	char ln[25], fn[25];
 	int choice = 0;
 	char ch = 'N';
 	
-	printf("\nEnter Employee ID to update: ");
-	scanf("%d", &id);
+	printf("\nLast name: "); fflush(stdin);	scanf("%s", &ln); strupr(ln);
+	printf("\nFirst name: "); fflush(stdin); scanf("%s", &fn); strupr(fn);
 	
-	for(ctr = 0; ctr < L->count && id != L->employees[ctr].empID; ctr++) {}
+	for(ctr = 0; ctr < L->count && strcmp(ln, L->employees[ctr].info.empName.lname) != 0; ctr++) {}
 	if(ctr < L->count) {
-		displayHeader();
-		displayEmployeeInfo(L->employees[ctr]);
-		
-		printf("\n\n1. Employee name");
-		printf("\n2. Address");
-		printf("\n3. Age");
-		printf("\n4. Date of Birth");
-		printf("\n5. Sex");
-		printf("\n6. Contact Number");
-		printf("\n7. Email");
-		printf("\n8. Department");
-		printf("\n9. Position");
-		printf("\n10. Min. late");
-		printf("\n11. Absence");
-		printf("\n12. Position rate");
-		printf("\n13. Basic salary");
-		printf("\n14. Overtime pay");
-		printf("\n15. Allowance");
-		printf("\n16. Less");
-		printf("\n17. Net amount paid");
-		printf("\n18. SSS");
-		printf("\n19. Philhealth");
-		printf("\n20. Pag-Ibig");
-		printf("\n21. Withholding");
-		printf("\n22. VALE");
-		printf("\n23. SSS Loan");
-		printf("\n24. Pag-Ibig Loan");
-		printf("\n25. Others");
-		printf("\n26. Exit");
-		
-		while(choice != 26 ) {
-			printf("\n\nWhat do you want to edit? "); fflush(stdin); scanf("%d", &choice);
+		if(strcmp(ln, L->employees[ctr].info.empName.lname) == 0) {
+			for( ; ctr < L->count && strcmp(fn, L->employees[ctr].info.empName.fname) != 0; ctr++){}
+		}
+		if(ctr < L->count) {
+			displayHeader();
+			displayEmployeeInfo(L->employees[ctr]);
 			
-			switch(choice) {
-				case 1:
-					printf("\n\nFirst name: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.empName.fname);
-					printf("\nMiddle name: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.empName.mname);
-					printf("\nLast name: "); 	fflush(stdin); scanf("%s", &L->employees[ctr].info.empName.lname);
-					break;
-				case 2:
-					printf("\n\nAddress: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.Address);
-					break;
-				case 3:
-					printf("\n\nAge: "); fflush(stdin); scanf("%d", &L->employees[ctr].info.Age);
-					break;
-				case 4:
-					printf("\n\nDate of Birth: [mm-dd-yyyy] "); fflush(stdin); scanf("%d-%d-%d", &L->employees[ctr].info.DoB.month, &L->employees[ctr].info.DoB.day, &L->employees[ctr].info.DoB.year);
-					break;
-				case 5:
-					printf("\n\nSex: [F/M] "); fflush(stdin); scanf("%c", &L->employees[ctr].info.Sex);
-					break;
-				case 6:
-					printf("\n\nContact number: "); fflush(stdin); scanf("%f", &L->employees[ctr].info.ContactNo);
-					break;
-				case 7:
-					printf("\n\nEmail: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.email);
-					break;	
-				case 8:
-					printf("\n\nDepartment: "); fflush(stdin); scanf("%s", &L->employees[ctr].Department);
-					break;
-				case 9:
-					printf("\n\nPosition: "); fflush(stdin); scanf("%s", &L->employees[ctr].Position);
-					break;
-				case 10:
-					printf("\n\nMin. Late: "); fflush(stdin); scanf("%d", &L->employees[ctr].minLate);
-					break;
-				case 11:
-					printf("\n\nAbsence: "); fflush(stdin); scanf("%d", &L->employees[ctr].Absence);
-					break;
-				case 12:
-					printf("\n\nPosition rate: "); fflush(stdin); scanf("%f", &L->employees[ctr].PositionRate);
-					break;
-				case 13:
-					printf("\n\nBasic salary: "); fflush(stdin); scanf("%f", &L->employees[ctr].BasicSalary);
-					break;
-				case 14:
-					printf("\n\nOvertime pay: "); fflush(stdin); scanf("%f", &L->employees[ctr].OvertimePay);
-					break;
-				case 15:
-					printf("\n\nAllowance: "); fflush(stdin); scanf("%f", &L->employees[ctr].Allowance);
-					break;
-				case 16:
-					printf("\n\nLess: "); fflush(stdin); scanf("%f", &L->employees[ctr].Less);
-					break;
-				case 17:
-					printf("\n\nNet amount paid: "); fflush(stdin); scanf("%f", &L->employees[ctr].netAmtPd);
-					break;
-				case 18:
-					printf("\n\nSSS: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.SSS);
-					break;
-				case 19:
-					printf("\n\nPhilHealth: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.Philhealth);
-					break;
-				case 20:
-					printf("\n\nPag-Ibig: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.PagIbig);
-					break;
-				case 21:
-					printf("\n\nWithholding: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.Withholding);
-					break;
-				case 22:
-					printf("\n\nVALE: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.VALE);
-					break;
-				case 23:
-					printf("\n\nSSS Loan: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.SSSLoan);
-					break;
-				case 24:
-					printf("\n\nPag-Ibig loan: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.PagIbigLoan);
-					break;
-				case 25:
-					printf("\n\nOthers: "); fflush(stdin); scanf("%f", &L->employees[ctr].deduct.others);
-					break;
-				case 26:
-					printf("Exiting!");
-					break;
-				default:
-					printf("Invalid input. Please try again!");
-					break;
+			printf("\n\n1. Employee name");
+			printf("\n2. Address");
+			printf("\n3. Age");
+			printf("\n4. Date of Birth");
+			printf("\n5. Sex");
+			printf("\n6. Contact Number");
+			printf("\n7. Email");
+			printf("\n8. Department");
+			printf("\n9. Position");
+			printf("\n10. Min. late");
+			printf("\n11. Absence");
+			printf("\n12. Position rate");
+			printf("\n13. Basic salary");
+			printf("\n14. Overtime pay");
+			printf("\n15. Allowance");
+			printf("\n16. Less");
+			printf("\n17. Net amount paid");
+			printf("\n18. SSS");
+			printf("\n19. Philhealth");
+			printf("\n20. Pag-Ibig");
+			printf("\n21. Withholding");
+			printf("\n22. VALE");
+			printf("\n23. SSS Loan");
+			printf("\n24. Pag-Ibig Loan");
+			printf("\n25. Others");
+			printf("\n26. Exit");
+			
+			while(choice != 26 ) {
+				choice = 0;
+				printf("\n\nWhat do you want to edit? "); fflush(stdin); scanf("%d", &choice);
+				
+				switch(choice) {
+					case 1:
+						printf("\n\nFirst name: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.empName.fname);	strupr(L->employees[ctr].info.empName.fname);
+						printf("\nMiddle name: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.empName.mname);	strupr(L->employees[ctr].info.empName.mname);
+						printf("\nLast name: "); 	fflush(stdin); scanf("%s", &L->employees[ctr].info.empName.lname);	strupr(L->employees[ctr].info.empName.lname);
+						break;
+					case 2:
+						printf("\n\nAddress: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.Address);	strupr(L->employees[ctr].info.Address);
+						break;
+					case 3:
+						printf("\n\nAge: "); fflush(stdin); scanf("%d", &L->employees[ctr].info.Age);
+						break;
+					case 4:
+						printf("\n\nDate of Birth: [mm-dd-yyyy] "); fflush(stdin); scanf("%d-%d-%d", &L->employees[ctr].info.DoB.month, &L->employees[ctr].info.DoB.day, &L->employees[ctr].info.DoB.year);
+						break;
+					case 5:
+						printf("\n\nSex: [F/M] "); fflush(stdin); scanf("%c", &L->employees[ctr].info.Sex); L->employees[ctr].info.Sex = toupper(L->employees[ctr].info.Sex);
+						break;
+					case 6:
+						printf("\n\nContact number: "); fflush(stdin); scanf("%lf", &L->employees[ctr].info.ContactNo);
+						break;
+					case 7:
+						printf("\n\nEmail: "); fflush(stdin); scanf("%s", &L->employees[ctr].info.email);
+						break;	
+					case 8:
+						printf("\n\nDepartment: "); fflush(stdin); scanf("%s", &L->employees[ctr].Department); strupr(L->employees[ctr].Department);
+						break;
+					case 9:
+						printf("\n\nPosition: "); fflush(stdin); scanf("%s", &L->employees[ctr].Position);	strupr(L->employees[ctr].Position);
+						break;
+					case 10:
+						printf("\n\nMin. Late: "); fflush(stdin); scanf("%d", &L->employees[ctr].minLate);
+						break;
+					case 11:
+						printf("\n\nAbsence: "); fflush(stdin); scanf("%d", &L->employees[ctr].Absence);
+						break;
+					case 12:
+						printf("\n\nPosition rate: "); fflush(stdin); scanf("%lf", &L->employees[ctr].PositionRate);
+						break;
+					case 13:
+						printf("\n\nBasic salary: "); fflush(stdin); scanf("%lf", &L->employees[ctr].BasicSalary);
+						break;
+					case 14:
+						printf("\n\nOvertime pay: "); fflush(stdin); scanf("%lf", &L->employees[ctr].OvertimePay);
+						break;
+					case 15:
+						printf("\n\nAllowance: "); fflush(stdin); scanf("%lf", &L->employees[ctr].Allowance);
+						break;
+					case 16:
+						printf("\n\nLess: "); fflush(stdin); scanf("%lf", &L->employees[ctr].Less);
+						break;
+					case 17:
+						printf("\n\nNet amount paid: "); fflush(stdin); scanf("%lf", &L->employees[ctr].netAmtPd);
+						break;
+					case 18:
+						printf("\n\nSSS: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.SSS);
+						break;
+					case 19:
+						printf("\n\nPhilHealth: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.Philhealth);
+						break;
+					case 20:
+						printf("\n\nPag-Ibig: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.PagIbig);
+						break;
+					case 21:
+						printf("\n\nWithholding: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.Withholding);
+						break;
+					case 22:
+						printf("\n\nVALE: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.VALE);
+						break;
+					case 23:
+						printf("\n\nSSS Loan: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.SSSLoan);
+						break;
+					case 24:
+						printf("\n\nPag-Ibig loan: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.PagIbigLoan);
+						break;
+					case 25:
+						printf("\n\nOthers: "); fflush(stdin); scanf("%lf", &L->employees[ctr].deduct.others);
+						break;
+					case 26:
+						printf("Exiting!");
+						break;
+					default:
+						printf("Invalid input. Please try again!");
+						break;
+				}
+				
+				if(choice != 26) {
+					printf("\n\nConfirm edit? [Y/N] "); fflush(stdin); scanf("%c", &ch);	ch = toupper(ch);
+					
+					if(ch == 'Y') {
+						writeEmpList(*L);
+						printf("\nUpdated successfully!\n\n");
+						break;
+					} else {
+						printf("\nNot updated!\n\n");
+						break;
+					}
+				}
 			}
-			
-			printf("\n\nConfirm edit? [Y/N] "); fflush(stdin); scanf("%c", &ch);
-			
-			if(ch == 'Y' || ch == 'y') {
-				writeEmpList(*L);
-				printf("\nUpdated successfully!\n\n");
-				break;
-			} else {
-				printf("\nNot updated!\n\n");
-				break;
-			}
-		}	
+		} else {
+			printf("\nEmployee not found!");
+		}
 	} else {
 		printf("\n\nEmployee not found!");
 	}
@@ -522,25 +536,35 @@ void updateEmp(EmpList *L)
 
 void deleteEmp(EmpList *L)
 {
-	int id, ctr;
+	int ctr;
+	char ln[25], fn[25];
 	char choice = 'N';
 	
+	printf("\nLast name: "); fflush(stdin);	scanf("%s", &ln); strupr(ln);
+	printf("\nFirst name: "); fflush(stdin); scanf("%s", &fn); strupr(fn);
 	
-	printf("\nEnter Employee ID to delete: "); scanf("%d", &id);
-	
-	for(ctr = 0; ctr < L->count && id != L->employees[ctr].empID; ctr++){}
+	for(ctr = 0; ctr < L->count && strcmp(ln, L->employees[ctr].info.empName.lname) != 0; ctr++) {}
 	if(ctr < L->count) {
-		displayEmployeeInfo(L->employees[ctr]);
-		
-		printf("\n\nConfirm deletion? [Y/N] "); fflush(stdin); scanf("%c", &choice);
-		
-		if(choice == 'Y' || choice == 'y') {
-			memcpy(L->employees + ctr, L->employees + ctr + 1, sizeof(EmployeeInfo) * L->count-ctr);
-			L->count--;
-			writeEmpList(*L);
-		} else {
-			printf("\n\nNot deleted!");
+		if(strcmp(ln, L->employees[ctr].info.empName.lname) == 0) {
+			for( ; ctr < L->count && strcmp(fn, L->employees[ctr].info.empName.fname) != 0; ctr++){}
 		}
+		if(ctr < L->count) {
+			displayEmployeeInfo(L->employees[ctr]);
+			
+			printf("\n\nConfirm deletion? [Y/N] "); fflush(stdin); scanf("%c", &choice); choice = toupper(choice);
+			
+			if(choice == 'Y') {
+				memcpy(L->employees + ctr, L->employees + ctr + 1, sizeof(EmployeeInfo) * L->count-ctr);
+				L->count--;
+				writeEmpList(*L);
+			} else {
+				printf("\n\nNot deleted!");
+			}	
+		} else {
+			printf("\nEmployee not found!");
+		}
+	} else {
+		printf("\nEmployee not found!");
 	}
 }
 

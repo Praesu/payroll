@@ -67,11 +67,11 @@ int main()
 	
 	initList(&L);
 	
-	EmployeeInfo a = {1, {{"Luke", "Abram", "Colina"}, "LapuLapu", 21, {25,7,2000}, 'M', 123123123, "colina@gmail.com"}, "HR", "Manager", 1, 1, 1, 1, 1, 1, 1, 5, {1, 2, 3, 4, 5, 6, 7, 8}};	
-	EmployeeInfo b = {2, {{"Janie", "Lane", "Sabado"}, "Cabancalan", 21, {1,1,2000}, 'F', 321321321, "sabado@gmail.com"}, "HR", "Manager", 10, 0, 1000, 20000, 1500, 300, 4000, 2333, {1,2,3,4,5,6,7,8}};
-	EmployeeInfo c = {3, {{"Hans", "Hansel", "Cesa"}, "Cabancalan", 22, {2,2,2000}, 'M', 222222222, "cesa@gmail.com"}, "HR", "Manager", 10, 0, 1000, 20000, 1500, 300, 4000, 4444, {1,2,3,4,5,6,7,8}};
-	EmployeeInfo d = {4, {{"Natalie", "Natalie", "Sagnoy"}, "Cebu", 22, {3,3,2000}, 'F', 333333333, "sagnoy@gmail.com"}, "HR", "Manager", 10, 0, 1000, 20000, 1500, 300, 4000, 3535, {1,2,3,4,5,6,7,8}};
-	EmployeeInfo e = {5, {{"Cate", "Frances", "Zamora"}, "Talamban", 23, {4,4,2000}, 'F', 444444444, "zamora@gmail.com"}, "HR", "Manager", 10, 0, 1000, 20000, 1500, 300, 4000, 1234, {1,2,3,4,5,6,7,8}};
+	EmployeeInfo a = {1, {{"LUKE", "ABRAM", "COLINA"}, "LAPULAPU", 21, {25,7,2000}, 'M', 123123123, "colina@gmail.com"}, "HR", "MANAGER", 1, 1, 1, 1, 1, 1, 1, 5, {1, 2, 3, 4, 5, 6, 7, 8}};	
+	EmployeeInfo b = {2, {{"JANIE", "LANE", "SABADO"}, "CABANCALAN", 21, {1,1,2000}, 'F', 321321321, "sabado@gmail.com"}, "HR", "MANAGER", 10, 0, 1000, 20000, 1500, 300, 4000, 2333, {1,2,3,4,5,6,7,8}};
+	EmployeeInfo c = {3, {{"HANS", "HANSEL", "CESA"}, "CABANCALAN", 22, {2,2,2000}, 'M', 222222222, "cesa@gmail.com"}, "HR", "MANAGER", 10, 0, 1000, 20000, 1500, 300, 4000, 4444, {1,2,3,4,5,6,7,8}};
+	EmployeeInfo d = {4, {{"NATALIE", "NATALIE", "SAGNOY"}, "CEBU", 22, {3,3,2000}, 'F', 333333333, "sagnoy@gmail.com"}, "HR", "MANAGER", 10, 0, 1000, 20000, 1500, 300, 4000, 3535, {1,2,3,4,5,6,7,8}};
+	EmployeeInfo e = {5, {{"CATE", "FRANCES", "ZAMORA"}, "TALAMBAN", 23, {4,4,2000}, 'F', 444444444, "zamora@gmail.com"}, "HR", "MANAGER", 10, 0, 1000, 20000, 1500, 300, 4000, 1234, {1,2,3,4,5,6,7,8}};
 	
 	insertLast(&L, a);
 	insertLast(&L, b);
