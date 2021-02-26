@@ -85,6 +85,31 @@ void writeEmpList(EmpList L);
 int main()
 {
     int a = 0;
+    int loginFlag = 0;
+    char username[10] ="\0";
+    char password[10] ="\0";
+    
+    
+    do{
+	printf("**************** LOGIN ******************\n");
+	if(username[0]!='\0' && password[0]!='\0' && loginFlag==0){
+		printf("Incorrent Username or Password.\n");
+		}
+		printf("\nEnter username:");
+	    scanf("%s",username);
+	    printf("Enter password:");
+	    scanf("%s",password);
+	    loginFlag = (strcmp(username,"admin")==0 && strcmp(password,"12345")==0)? 1:0;
+
+	    system("CLS");
+
+    }while(loginFlag==0);
+    
+    if(loginFlag==1){
+    	
+    	    printf("*************** PAYROLL SYSTEM ****************\n\n");
+	    printf("1. View Employee List\n");
+
     EmpList L;
     
 	L = populateList();
@@ -96,6 +121,37 @@ int main()
 	    printf("3. End of day inputs\n");
 	    printf("4. Settings\n");
 	    printf("5. Exit\n");
+
+
+	    while(a != 5) {
+		printf("\nWhat do you want to do? Enter number: ");
+		scanf("%d", &a);
+
+		switch (a) {
+		    case 1: 
+			viewEmpList();
+			break;
+		    case 2:
+			calculatePayroll();
+			break;
+		    case 3:
+			dayInputs();
+			break;
+		    case 4:
+			settings();
+			break;
+		    case 5:
+			printf("Exiting!");
+			break;
+		    default:
+			printf("Error, please input correctly!");
+			break;
+	       }
+	    }
+    	
+     }
+   
+
     
         printf("\nWhat do you want to do? Enter number: ");
         scanf("%d", &a);
@@ -121,6 +177,7 @@ int main()
                 break;
         }
     }
+
 
     return 0;
 }
