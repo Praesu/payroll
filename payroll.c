@@ -63,26 +63,24 @@ void calculatePayroll();
 void dayInputs();
 void settings();
 
-void initList(EmpList *L);
-EmpList populateList();
+void initList(EmpList *L); 
+EmpList populateList(); 
 
 void displayPersonalInfo(PersonalInfo e);
 void displayDeductions(Deductions d);
 void displayEmployeeInfo(EmployeeInfo e);
 void displayEmpList(EmpList L);
 
-void insertLast(EmpList *L, EmployeeInfo info);
-
 void createNewEmp(EmpList *L);
 void updateEmp(EmpList *L);
 void deleteEmp(EmpList *L);
 
-void selectionSort(EmpList *L);
-void insertSorted(EmpList *L, EmployeeInfo e);
+void selectionSort(EmpList *L); 
+void insertSorted(EmpList *L, EmployeeInfo e); 
+void insertLast(EmpList *L, EmployeeInfo info);
 
 void writeEmpInfo(EmployeeInfo e);
 void writeEmpList(EmpList L);
-PersonalInfo getPersonalInfo();
 
 int main()
 {

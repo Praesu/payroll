@@ -35,7 +35,7 @@ typedef struct {
 	double others;
 } Deductions;
 
-typedef struct {	// {1, {{"Luke", "Abram", "Colina"}, "LapuLapu", 21, {25,7,2000}, 'M', 123123123, "colina@gmail.com"}, "HR", "Manager", 1, 1, 1, 1, 1, 1, 1, {1, 2, 3, 4, 5, 6, 7, 8}};
+typedef struct {
 	int empID;
 	PersonalInfo info;
 	char Department[15];
