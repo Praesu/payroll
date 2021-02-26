@@ -285,13 +285,13 @@ void viewEmpList(EmpList *L)
     PersonalInfo e;
     
     displayEmpList(*L);
-    
-    printf("\n\n1. Create New Employee\n");
-    printf("2. Update Employee\n");
-    printf("3. Delete Employee\n");
-    printf("4. Exit\n");
 
     while(a != 4) {
+    	printf("\n\n1. Create New Employee\n");
+	    printf("2. Update Employee\n");
+	    printf("3. Delete Employee\n");
+	    printf("4. Exit\n");
+    
         printf("\nWhat do you want to do? Enter number: ");
         scanf("%d", &a);
 
@@ -355,21 +355,18 @@ void createNewEmp(EmpList *L)
 	if(confirm == 'y' || confirm == 'Y') {
 		e.empID = L->count;
 		insertSorted(L, e);
-		writeEmpInfo(e);
+		writeEmpList(*L);
 	}	
 }
 
-
 void writeEmpList(EmpList L)
 {
-	int ctr;
 	FILE *fp;
 	
 	fp = fopen("employeeInfo.txt", "wb+");
 	
 	if(fp != NULL) {
 		fwrite(L.employees, sizeof(EmployeeInfo), L.count, fp);
-		writeEmpInfo(L.employees[ctr]);	
 		
 		fclose(fp);
 	} else {
@@ -561,6 +558,4 @@ void settings()
 {
 	printf("\nSettings!");
 }
-
-
 
