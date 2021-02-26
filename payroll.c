@@ -541,9 +541,9 @@ void calculatePayroll()
 void displayDayInput(EmpList L){
 	int count;
 	
-	printf("\n%5s %15s %15s %15s %10s %10s %10s %15s %15s","ID","LASTNAME","FIRSTNAME","PositionRate","OVERTIME(Min)","LATE(Min)","ABSENCES","OvertimePay","LESS");
+	printf("\n%-5s %-15s %-15s %-15s %-10s %-10s %-10s %-15s %-15s","ID","LASTNAME","FIRSTNAME","PositionRate","OVERTIME(Min)","LATE(Min)","ABSENCES","OvertimePay","LESS");
 	for(count=0;count<L.count;count++){
-	printf("\n%5d %15s %15s %15.2lf %10d %10d %10d %15.2lf %15.2lf",L.employees[count].empID,L.employees[count].info.empName.lname,
+	printf("\n%-5d %-15s %-15s %-15.2lf %-10d %-10d %-10d %-15.2lf %-15.2lf",L.employees[count].empID,L.employees[count].info.empName.lname,
 	L.employees[count].info.empName.fname,L.employees[count].PositionRate,L.employees[count].minOvertime,L.employees[count].minLate,
 	L.employees[count].Absence,L.employees[count].OvertimePay,L.employees[count].Less);	
 	}
