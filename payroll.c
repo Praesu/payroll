@@ -726,7 +726,7 @@ void settings(EmpList *L, PayrollSetting *r)
 		
 		switch(choice) {
 			case 1:		
-				while(wage != 5){
+			//	while(wage != 5){
 					wage = 0;
 					system("CLS");
 					printf("************************* WAGE SETTING ***************************");
@@ -765,7 +765,7 @@ void settings(EmpList *L, PayrollSetting *r)
 							break;	
 					}
 					
-				}
+			//	}
 				
 				for(ctr = 0; ctr < L->count; ctr++) {
 					L->employees[ctr].BasicSalary = L->employees[ctr].PositionRate / r->rate;
