@@ -64,7 +64,7 @@ typedef int Rate;
 void viewEmpList(EmpList *L, Rate r);
 void calculatePayroll();
 void dayInputs(EmpList *L);
-void settings();
+void settings(EmpList *L, Rate *R);
 
 void initList(EmpList *L); 
 EmpList populateList(); 
@@ -86,6 +86,9 @@ void insertLast(EmpList *L, EmployeeInfo info);
 void writeEmpInfo(EmployeeInfo e);
 void writeEmpList(EmpList L);
 void calculationOvertime(EmpList *e,int count,float percentOvertime);
+void writeRate(Rate r);
+Rate readRate();
+
 int main()
 {
 	EmpList L;
@@ -93,7 +96,8 @@ int main()
     int loginFlag = 0;
     char username[10] ="\0";
     char password[10] ="\0";
-    Rate r = 24; /* placeholder */
+    Rate r;
+    
     
     do{
 	printf("**************** LOGIN ******************\n");
@@ -115,7 +119,8 @@ int main()
     printf("*************** PAYROLL SYSTEM ****************\n\n");
 
 	L = populateList();
-
+	r = readRate();
+	
     while(a != 5) {
     	a = 0;
     	printf("1. View Employee List\n");
@@ -139,7 +144,7 @@ int main()
 			dayInputs(&L);
 			break;
 		    case 4:
-			settings();
+			settings(&L, &r);
 			break;
 		    case 5:
 			printf("Exiting!");
@@ -696,10 +701,101 @@ void dayInputs(EmpList *L)
 			printf("\nInvalid input. Please try again!");
 			break;
 	}
-
 }
-void settings()
+
+void settings(EmpList *L, Rate *r)
 {
-	printf("\nSettings!");
+	int ctr, choice, wage; 
+
+	while (choice != 3) {
+		printf("\n1. Edit rate of wage");
+		printf("\n2. View current settings");
+		printf("\n3. Exit");
+		
+		printf("\n\nWhat do you want to do? "); fflush(stdin); scanf("%d", &choice);
+		
+		switch(choice) {
+			case 1:		
+				while(wage != 5){
+					wage = 0;
+					
+					printf("\n1. Daily");
+					printf("\n2. Weekly");
+					printf("\n3. Bi-monthly");
+					printf("\n4. Monthly");
+					printf("\n5. Exit");
+					
+					printf("\n\nHow often do yo want to pay? "); fflush(stdin); scanf("%d", &wage);
+					switch(wage) {
+						case 1:
+							*r = 312;
+							printf("\nChanged successfully!");
+							break;
+						case 2:
+							*r = 96;
+							printf("\nChanged successfully!");
+							break;
+						case 3:
+							*r = 24;
+							printf("\nChanged successfully!");
+							break;
+						case 4:
+							*r = 12;
+							printf("\nChanged successfully!");
+							break;
+						case 5:
+							break;
+						default:
+							printf("\nInvalid input. Please try again.");
+							break;	
+					}
+				}
+				
+				for(ctr = 0; ctr < L->count; ctr++) {
+					L->employees[ctr].BasicSalary = L->employees[ctr].PositionRate / *r;
+				}
+				printf("Rate has been changed successsfully!");
+				writeRate(*r);
+				writeEmpList(*L);
+				break;
+			case 2:
+				printf("\nCurrent rate of wage is: %d\n", *r);
+				break;
+			case 3:
+				break;
+			default:
+				printf("\nInvalid input. Please try again.");
+				break;
+		}
+	}
+}
+
+void writeRate(Rate r)
+{
+	FILE  *fp;
+	
+	fp = fopen("settings.txt", "wb");
+	
+	if(fp != NULL) {
+		fwrite(&r, sizeof(Rate), 1, fp);
+		fclose(fp);
+	} else {
+		printf("File not found!");
+	}
+}
+
+Rate readRate()
+{
+	FILE *fp;
+	Rate r;
+	
+	fp = fopen("settings.txt", "rb");
+	
+	if(fp != NULL) {
+		fread(&r, sizeof(Rate),1 , fp);
+		fclose(fp);
+	}
+		
+	return r;
 }
 
