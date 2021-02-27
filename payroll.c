@@ -73,7 +73,7 @@ void displayPersonalInfo(PersonalInfo e);
 void displayDeductions(Deductions d);
 void displayEmployeeInfo(EmployeeInfo e);
 void displayEmpList(EmpList L);
-void displayDayInput(EmpList L);
+void displayDayInput(EmpList L,int emp);
 
 void createNewEmp(EmpList *L, Rate r);
 void updateEmp(EmpList *L, Rate r);
@@ -538,14 +538,20 @@ void calculatePayroll()
 	printf("\nCalculate!");
 }
 
-void displayDayInput(EmpList L){
+void displayDayInput(EmpList L,int emp){
 	int count;
-	
-	printf("\n%-5s %-15s %-15s %-15s %-10s %-10s %-10s %-15s %-15s","ID","LASTNAME","FIRSTNAME","PositionRate","OVERTIME(Min)","LATE(Min)","ABSENCES","OvertimePay","LESS");
-	for(count=0;count<L.count;count++){
-	printf("\n%-5d %-15s %-15s %-15.2lf %-10d %-10d %-10d %-15.2lf %-15.2lf",L.employees[count].empID,L.employees[count].info.empName.lname,
-	L.employees[count].info.empName.fname,L.employees[count].PositionRate,L.employees[count].minOvertime,L.employees[count].minLate,
-	L.employees[count].Absence,L.employees[count].OvertimePay,L.employees[count].Less);	
+	printf("********************************************** DAY INPUT *************************************************");
+	printf("\n%5s %15s %15s %15s %10s %10s %10s %15s","ID","LASTNAME","FIRSTNAME","PositionRate","OVERTIME(Min)","LATE(Min)","ABSENCES","OvertimePay");
+	if(emp==-1){
+		for(count=0;count<L.count;count++){
+		printf("\n%5d %15s %15s %15.2lf %10d %10d %10d %15.2lf",L.employees[count].empID,L.employees[count].info.empName.lname,
+		L.employees[count].info.empName.fname,L.employees[count].PositionRate,L.employees[count].minOvertime,L.employees[count].minLate,
+		L.employees[count].Absence,L.employees[count].OvertimePay);	
+		}
+	}else{
+		printf("\n%5d %15s %15s %15.2lf %10d %10d %10d %15.2lf",L.employees[emp].empID,L.employees[emp].info.empName.lname,
+		L.employees[emp].info.empName.fname,L.employees[emp].PositionRate,L.employees[emp].minOvertime,L.employees[emp].minLate,
+		L.employees[emp].Absence,L.employees[emp].OvertimePay);	
 	}
 }
 void calculationOvertime(EmpList *e,int count,float percentOvertime)
@@ -555,7 +561,6 @@ void calculationOvertime(EmpList *e,int count,float percentOvertime)
 	int totMins;
 	double totPay,x;
 	
-	system("CLS");
 	printf("\nHours: "); fflush(stdin);	scanf("%d", &y);
 	y *= 60;
 	
@@ -565,9 +570,8 @@ void calculationOvertime(EmpList *e,int count,float percentOvertime)
 	
 	x=(((e->employees[count].PositionRate/312)*percentOvertime)/8)/60;
 	/*x is salary per minute*/
-
+	
 	totPay=x*totMins;
-	totPay+=(e->employees[count].PositionRate/8);
 	e->employees[count].minOvertime += totMins;
 	e->employees[count].OvertimePay += totPay;
 
@@ -584,7 +588,7 @@ void dayInputs(EmpList *L)
 	char absentOpt = '\0';
 	
 	system("CLS");
-	displayDayInput(*L);
+	displayDayInput(*L,-1);
 	
 	printf("\n\nProceed?(Y|N):"); fflush(stdin);	scanf("%c", &flag); strupr(&flag);
 	
@@ -597,6 +601,7 @@ void dayInputs(EmpList *L)
 			if(count<L->count){
 			
 					system("CLS");
+					displayDayInput(*L,count);
 					printf("\n\n1. ADD Late");
 					printf("\n2. ADD Overtime");
 					printf("\n3. Absent");
@@ -605,17 +610,16 @@ void dayInputs(EmpList *L)
 					
 					switch(opt){
 						case 1:
-						
-							system("CLS");
-							printf("Hours:"); fflush(stdin);	scanf("%d", &hour);
+			
+							printf("\nHours:"); fflush(stdin);	scanf("%d", &hour);
 							printf("Minutes:"); fflush(stdin); scanf("%d", &minute);
-							printf("Confirm? (Y|N):"); fflush(stdin); scanf("%c", &proceed); strupr(&proceed);
+							printf("\nConfirm? (Y|N):"); fflush(stdin); scanf("%c", &proceed); strupr(&proceed);
 							
 							switch(proceed){
 								case 'Y':
 									minute = L->employees[count].minLate + minute + (hour*60);
 									L->employees[count].minLate = minute;
-									L->employees[count].Less += (((L->employees[count].PositionRate/8)/60) * minute);
+							
 									break;
 								case 'N':
 									printf("\nExiting!");
@@ -625,34 +629,34 @@ void dayInputs(EmpList *L)
 									break;
 							}
 							system("CLS");
-							displayDayInput(*L);
+							displayDayInput(*L,-1);
 							break;
 						case 2:
 							system("CLS");
-							printf("1. Regular");
+							displayDayInput(*L,count);
+							printf("\n\n1. Regular");
 							printf("\n2. Non-Legal");
 							printf("\n3. Legal");
 							printf("\n4. Exit");	
-							printf("\n\nType of Overtime?"); scanf(" %d", &overtimeOpt);
+							printf("\n\nType of Overtime?:"); scanf(" %d", &overtimeOpt);
 						
 							if(overtimeOpt==1){
-								calculationOvertime(L,count,125);
+								calculationOvertime(L,count,1.25);
 							}else if(overtimeOpt==2){
-								calculationOvertime(L,count,135);
+								calculationOvertime(L,count,1.35);
 							}else if(overtimeOpt==3){
-								calculationOvertime(L,count,200);
+								calculationOvertime(L,count,2);
 							}else{
 								printf("Exit!");
 							}
 							system("CLS");	
-							displayDayInput(*L);
+							displayDayInput(*L,-1);
 							break;
 						case 3:
-							system("CLS");
+							
 							printf("\nAre you sure?(Y|N):"); scanf(" %c", &absentOpt); strupr(&absentOpt);
 							if(absentOpt=='Y'){
 								++L->employees[count].Absence;
-								L->employees[count].Less += L->employees[count].PositionRate;
 								printf("\n%s %s is absent.",L->employees[count].info.empName.fname,L->employees[count].info.empName.lname);
 							}else if(absentOpt=='N'){
 								printf("Incomplete Process");
@@ -671,6 +675,7 @@ void dayInputs(EmpList *L)
 					
 					if(ch == 'Y') {
 						writeEmpList(*L);
+						system("CLS");
 						printf("\nUpdated successfully!\n\n");
 						break;
 					} else {
