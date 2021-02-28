@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define SIZE 15
 
@@ -74,10 +75,16 @@ typedef struct {
 
 typedef int Rate;
 
+typedef struct{
+	Rate rate;
+	char username[10];
+	char password[10];
+}PayrollSetting;
+
 void viewEmpList(EmpList *L,Rate r);
 void calculatePayroll(EmpList *L);
-void dayInputs();
-void settings();
+void dayInputs(EmpList *L);
+void settings(EmpList *L, PayrollSetting *r);
 
 void initList(EmpList *L); 
 EmpList populateList(); 
@@ -86,6 +93,7 @@ void displayPersonalInfo(PersonalInfo e);
 void displayDeductions(Deductions d);
 void displayEmployeeInfo(EmployeeInfo e);
 void displayEmpList(EmpList L);
+void displayDayInput(EmpList L,int emp);
 
 void createNewEmp(EmpList *L,Rate r);
 void updateEmp(EmpList *L,Rate r);
@@ -97,6 +105,9 @@ void insertLast(EmpList *L, EmployeeInfo info);
 
 void writeEmpInfo(EmployeeInfo e);
 void writeEmpList(EmpList L);
+void writeSetting(PayrollSetting r);
+void calculationOvertime(EmpList *e,int count,float percentOvertime);
+PayrollSetting readSetting();
 
 void displayHeaderforCP();
 void displayEmployeeInfoforCP(EmployeeInfo e);
@@ -110,17 +121,39 @@ void calculatePagIbig(EmployeeInfo *e);
 void calculatePhilhealth(EmployeeInfo *e);
 void calculateWithholdingTax(EmployeeInfo *e);
 
+
 int main()
 {
     int a = 0;
+    int loginFlag = 0;
     EmpList L;
-    Rate r = 24; /*placeholder*/
+    char username[10] ="\0";
+    char password[10] ="\0";
+    PayrollSetting r;
+    r = readSetting();
+
+	do{
+	printf("**************** LOGIN ******************\n");
+	if(username[0]!='\0' && password[0]!='\0' && loginFlag==0){
+		printf("Incorrent Username or Password.\n");
+		}
+		printf("\nEnter username:");
+	    scanf("%s",username);
+	    printf("Enter password:");
+	    scanf("%s",password);
+	    loginFlag = (strcmp(username,r.username)==0 && strcmp(password,r.password)==0)? 1:0;
+
+	    system("CLS");
+
+    }while(loginFlag==0);
+
+    if(loginFlag==1){
+    	
+    printf("*************** PAYROLL SYSTEM ****************\n\n");
+
 	L = populateList();
 
-    while(a != 5) {
-    	system("cls");
-		printf("Payroll System");
-    	
+    while(a != 5) {    	
     	a = 0;
     	printf("\n\n1. View Employee List\n");
 	    printf("2. Calculate Payroll\n");
@@ -129,22 +162,23 @@ int main()
 	    printf("5. Exit\n");
     
         printf("\nWhat do you want to do? Enter number: ");
+        fflush(stdin);
         scanf("%d", &a);
 
         switch (a) {
             case 1: 
     			system("cls");
-                viewEmpList(&L,r);
+                viewEmpList(&L,r.rate);
                 break;
             case 2:
     			system("cls");
                 calculatePayroll(&L);
                 break;
             case 3:
-                dayInputs();
+                dayInputs(&L);
                 break;
             case 4:
-                settings();
+                settings(&L, &r);
                 break;
             case 5:
             	printf("Exiting!");
@@ -156,8 +190,8 @@ int main()
     }
 
     return 0;
+	}
 }
-
 
 void initList(EmpList *L)
 {
@@ -913,153 +947,115 @@ void calculateSSS(EmployeeInfo *e)
 	if(monthly<2250){
 		e->deduct.SSS=170;
 		e->deduct.emprShareSSS=80;
-		
 	}else if(monthly>=2250&&monthly<2750){
 		e->deduct.SSS=210;
 		e->deduct.emprShareSSS=100;
-		
 	}else if(monthly>=2750&&monthly<3250){
 		e->deduct.SSS=250;
 		e->deduct.emprShareSSS=120;
-		
 	}else if(monthly>=3250&&monthly<3750){
 		e->deduct.SSS=290;
 		e->deduct.emprShareSSS=140;
-		
 	}else if(monthly>=3750&&monthly<4250){
 		e->deduct.SSS=330;
 		e->deduct.emprShareSSS=160;
-		
 	}else if(monthly>=4250&&monthly<4750){
 		e->deduct.SSS=370;
 		e->deduct.emprShareSSS=180;
-		
 	}else if(monthly>=4750&&monthly<5250){
 		e->deduct.SSS=410;
 		e->deduct.emprShareSSS=200;
-		
 	}else if(monthly>=5250&&monthly<5750){
 		e->deduct.SSS=450;
 		e->deduct.emprShareSSS=220;
-		
 	}else if(monthly>=5750&&monthly<6250){
 		e->deduct.SSS=490;
 		e->deduct.emprShareSSS=240;
-		
 	}else if(monthly>=6250&&monthly<6750){
 		e->deduct.SSS=530;
 		e->deduct.emprShareSSS=260;
-		
 	}else if(monthly>=6750&&monthly<7250){
 		e->deduct.SSS=570;
 		e->deduct.emprShareSSS=280;
-		
 	}else if(monthly>=7250&&monthly<7750){
 		e->deduct.SSS=610;
 		e->deduct.emprShareSSS=300;
-		
 	}else if(monthly>=7750&&monthly<8250){
 		e->deduct.SSS=650;
 		e->deduct.emprShareSSS=320;
-		
 	}else if(monthly>=8250&&monthly<8750){
 		e->deduct.SSS=690;
 		e->deduct.emprShareSSS=340;
-		
 	}else if(monthly>=8750&&monthly<9250){
 		e->deduct.SSS=730;
 		e->deduct.emprShareSSS=360;
-		
 	}else if(monthly>=9250&&monthly<9750){
 		e->deduct.SSS=770;
 		e->deduct.emprShareSSS=380;
-		
 	}else if(monthly>=9750&&monthly<10250){
 		e->deduct.SSS=810;
 		e->deduct.emprShareSSS=400;
-		
 	}else if(monthly>=10250&&monthly<10750){
 		e->deduct.SSS=850;
 		e->deduct.emprShareSSS=420;
-		
 	}else if(monthly>=10750&&monthly<11250){
 		e->deduct.SSS=890;
 		e->deduct.emprShareSSS=440;
-		
 	}else if(monthly>=11250&&monthly<11750){
 		e->deduct.SSS=930;
 		e->deduct.emprShareSSS=460;
-		
 	}else if(monthly>=11750&&monthly<12250){
 		e->deduct.SSS=970;
 		e->deduct.emprShareSSS=480;
-		
 	}else if(monthly>=12250&&monthly<12750){
 		e->deduct.SSS=1010;
 		e->deduct.emprShareSSS=500;
-		
 	}else if(monthly>=12750&&monthly<13250){
 		e->deduct.SSS=1050;
 		e->deduct.emprShareSSS=520;
-		
 	}else if(monthly>=13250&&monthly<13750){
 		e->deduct.SSS=1090;
 		e->deduct.emprShareSSS=540;
-		
 	}else if(monthly>=13750&&monthly<14250){
 		e->deduct.SSS=1130;
 		e->deduct.emprShareSSS=560;
-		
 	}else if(monthly>=14250&&monthly<14750){
 		e->deduct.SSS=1170;
 		e->deduct.emprShareSSS=580;
-		
 	}else if(monthly>=14750&&monthly<15250){
 		e->deduct.SSS=1230;
 		e->deduct.emprShareSSS=600;
-		
 	}else if(monthly>=15250&&monthly<15750){
 		e->deduct.SSS=1270;
 		e->deduct.emprShareSSS=620;
-		
 	}else if(monthly>=15750&&monthly<16250){
 		e->deduct.SSS=1310;
 		e->deduct.emprShareSSS=640;
-		
 	}else if(monthly>=16250&&monthly<16750){
 		e->deduct.SSS=1350;
 		e->deduct.emprShareSSS=660;
-		
 	}else if(monthly>=16750&&monthly<17250){
 		e->deduct.SSS=1390;
 		e->deduct.emprShareSSS=680;
-		
 	}else if(monthly>=17250&&monthly<17750){
 		e->deduct.SSS=1430;
 		e->deduct.emprShareSSS=700;
-		
 	}else if(monthly>=17750&&monthly<18250){
 		e->deduct.SSS=1470;
 		e->deduct.emprShareSSS=720;
-		
 	}else if(monthly>=18250&&monthly<18750){
 		e->deduct.SSS=1510;
 		e->deduct.emprShareSSS=740;
-		
 	}else if(monthly>=18750&&monthly<19250){
 		e->deduct.SSS=1550;
 		e->deduct.emprShareSSS=760;
-		
 	}else if(monthly>=19250&&monthly<19750){
 		e->deduct.SSS=1590;
 		e->deduct.emprShareSSS=780;
-		
 	}else if(monthly>=19750){
 		e->deduct.SSS=1630;
 		e->deduct.emprShareSSS=800;
-		
 	}
-	
 }
 
 void calculatePagIbig(EmployeeInfo *e)
@@ -1073,7 +1069,6 @@ void calculatePagIbig(EmployeeInfo *e)
 		e->deduct.PagIbig=e->grossSalary*.02;
 		e->deduct.emprSharePagIbig=e->grossSalary*.02;
 	}
-	
 }
 
 void calculatePhilhealth(EmployeeInfo *e)
@@ -1090,109 +1085,83 @@ void calculatePhilhealth(EmployeeInfo *e)
 		
 	}else if(monthly>=10000&&monthly<11000){
 		e->deduct.Philhealth=125;
-		e->deduct.emprSharePhilhealth=125;
-		
+		e->deduct.emprSharePhilhealth=125;	
 	}else if(monthly>=11000&&monthly<12000){
 		e->deduct.Philhealth=137.5;
 		e->deduct.emprSharePhilhealth=137.5;
-		
 	}else if(monthly>=12000&&monthly<13000){
 		e->deduct.Philhealth=150;
 		e->deduct.emprSharePhilhealth=150;
-		
 	}else if(monthly>=13000&&monthly<14000){
 		e->deduct.Philhealth=162.5;
 		e->deduct.emprSharePhilhealth=162.5;
-		
 	}else if(monthly>=14000&&monthly<15000){
 		e->deduct.Philhealth=175;
 		e->deduct.emprSharePhilhealth=175;
-		
 	}else if(monthly>=15000&&monthly<16000){
 		e->deduct.Philhealth=187.5;
 		e->deduct.emprSharePhilhealth=187.5;
-		
 	}else if(monthly>=16000&&monthly<17000){
 		e->deduct.Philhealth=200;
 		e->deduct.emprSharePhilhealth=200;
-		
 	}else if(monthly>=17000&&monthly<18000){
 		e->deduct.Philhealth=212.5;
 		e->deduct.emprSharePhilhealth=212.5;
-		
 	}else if(monthly>=18000&&monthly<19000){
 		e->deduct.Philhealth=225;
 		e->deduct.emprSharePhilhealth=225;
-		
 	}else if(monthly>=19000&&monthly<20000){
 		e->deduct.Philhealth=237.5;
 		e->deduct.emprSharePhilhealth=237.5;
-		
 	}else if(monthly>=20000&&monthly<21000){
 		e->deduct.Philhealth=250;
 		e->deduct.emprSharePhilhealth=250;
-		
 	}else if(monthly>=21000&&monthly<22000){
 		e->deduct.Philhealth=262.5;
 		e->deduct.emprSharePhilhealth=262.5;
-		
 	}else if(monthly>=22000&&monthly<23000){
 		e->deduct.Philhealth=275;
 		e->deduct.emprSharePhilhealth=275;
-		
 	}else if(monthly>=23000&&monthly<24000){
 		e->deduct.Philhealth=287;
 		e->deduct.emprSharePhilhealth=287;
-		
 	}else if(monthly>=24000&&monthly<25000){
 		e->deduct.Philhealth=300;
 		e->deduct.emprSharePhilhealth=300;
-		
 	}else if(monthly>=25000&&monthly<26000){
 		e->deduct.Philhealth=312.5;
 		e->deduct.emprSharePhilhealth=312.5;
-		
 	}else if(monthly>=26000&&monthly<27000){
 		e->deduct.Philhealth=325;
 		e->deduct.emprSharePhilhealth=325;
-		
 	}else if(monthly>=27000&&monthly<28000){
 		e->deduct.Philhealth=337.5;
 		e->deduct.emprSharePhilhealth=337.5;
-		
 	}else if(monthly>=28000&&monthly<29000){
 		e->deduct.Philhealth=350;
 		e->deduct.emprSharePhilhealth=350;
-		
 	}else if(monthly>=29000&&monthly<30000){
 		e->deduct.Philhealth=362.5;
 		e->deduct.emprSharePhilhealth=362.5;
-		
 	}else if(monthly>=30000&&monthly<31000){
 		e->deduct.Philhealth=375;
 		e->deduct.emprSharePhilhealth=375;
-		
 	}else if(monthly>=31000&&monthly<32000){
 		e->deduct.Philhealth=387.5;
 		e->deduct.emprSharePhilhealth=387.5;
-		
 	}else if(monthly>=32000&&monthly<33000){
 		e->deduct.Philhealth=400;
 		e->deduct.emprSharePhilhealth=400;
-		
 	}else if(monthly>=33000&&monthly<34000){
 		e->deduct.Philhealth=412.5;
 		e->deduct.emprSharePhilhealth=412.5;
-		
 	}else if(monthly>=34000&&monthly<35000){
 		e->deduct.Philhealth=425;
 		e->deduct.emprSharePhilhealth=425;
-		
 	}else if(monthly>=35000){
 		e->deduct.Philhealth=437.5;
 		e->deduct.emprSharePhilhealth=437.5;
 	}
-	
 }
 
 void calculateWithholdingTax(EmployeeInfo *e)
@@ -1213,15 +1182,308 @@ void calculateWithholdingTax(EmployeeInfo *e)
 	}else if(e->grossSalary>500000){
 		e->deduct.Withholding=125000+(e->grossSalary*.32);
 	}
+}
+
+void displayDayInput(EmpList L,int emp){
+	int count;
+	printf("********************************************** DAY INPUT *************************************************");
+	printf("\n%5s %15s %15s %15s %10s %10s %10s %15s","ID","LASTNAME","FIRSTNAME","PositionRate","OVERTIME(Min)","LATE(Min)","ABSENCES","OvertimePay");
+	if(emp==-1){
+		for(count=0;count<L.count;count++){
+		printf("\n%5d %15s %15s %15.2lf %10d %10d %10d %15.2lf",L.employees[count].empID,L.employees[count].info.empName.lname,
+		L.employees[count].info.empName.fname,L.employees[count].PositionRate,L.employees[count].minOvertime,L.employees[count].minLate,
+		L.employees[count].Absence,L.employees[count].OvertimePay);	
+		}
+	}else{
+		printf("\n%5d %15s %15s %15.2lf %10d %10d %10d %15.2lf",L.employees[emp].empID,L.employees[emp].info.empName.lname,
+		L.employees[emp].info.empName.fname,L.employees[emp].PositionRate,L.employees[emp].minOvertime,L.employees[emp].minLate,
+		L.employees[emp].Absence,L.employees[emp].OvertimePay);	
+	}
+}
+
+void calculationOvertime(EmpList *e,int count,float percentOvertime)
+{
+
+	int y,z;
+	int totMins;
+	double totPay,x;
 	
+	printf("\nHours: "); fflush(stdin);	scanf("%d", &y);
+	y *= 60;
+	
+	printf("Minutes: "); fflush(stdin);	scanf("%d", &z);
+
+	totMins=y+z;
+	
+	x=(((e->employees[count].PositionRate/312)*percentOvertime)/8)/60;
+	/*x is salary per minute*/
+	
+	totPay=x*totMins;
+	e->employees[count].minOvertime += totMins;
+	e->employees[count].OvertimePay += totPay;
+
+
 }
 
-void dayInputs()
+void dayInputs(EmpList *L)
 {
-	printf("\nDay Inputs!");
+	int id, count,hour,minute,day;
+	int opt,overtimeOpt;
+	char flag = '\0';
+	char proceed = '\0';
+	char ch = '\0';
+	char absentOpt = '\0';
+	
+	system("CLS");
+	displayDayInput(*L,-1);
+	
+	printf("\n\nProceed?(Y|N):"); fflush(stdin);	scanf("%c", &flag); strupr(&flag);
+	
+	switch(flag){
+		case 'Y':
+		
+			printf("\nEnter Employee ID: "); fflush(stdin);	scanf("%d", &id);
+		
+			for(count=0;count<L->count && L->employees[count].empID!=id;count++){}
+			if(count<L->count){
+			
+					system("CLS");
+					displayDayInput(*L,count);
+					printf("\n\n1. ADD Late");
+					printf("\n2. ADD Overtime");
+					printf("\n3. Absent");
+					printf("\n4. Exit");	
+					printf("\n\n\nEnter option: "); fflush(stdin);	scanf("%d", &opt);
+					
+					switch(opt){
+						case 1:
+			
+							printf("\nHours:"); fflush(stdin);	scanf("%d", &hour);
+							printf("Minutes:"); fflush(stdin); scanf("%d", &minute);
+							printf("\nConfirm? (Y|N):"); fflush(stdin); scanf("%c", &proceed); strupr(&proceed);
+							
+							switch(proceed){
+								case 'Y':
+									minute = L->employees[count].minLate + minute + (hour*60);
+									L->employees[count].minLate = minute;
+							
+									break;
+								case 'N':
+									printf("\nExiting!");
+									break;
+								default:
+									printf("\nInvalid input. Please try again!");
+									break;
+							}
+							system("CLS");
+							displayDayInput(*L,-1);
+							break;
+						case 2:
+							system("CLS");
+							displayDayInput(*L,count);
+							printf("\n\n1. Regular");
+							printf("\n2. Non-Legal");
+							printf("\n3. Legal");
+							printf("\n4. Exit");	
+							printf("\n\nType of Overtime?:"); scanf(" %d", &overtimeOpt);
+						
+							if(overtimeOpt==1){
+								calculationOvertime(L,count,1.25);
+							}else if(overtimeOpt==2){
+								calculationOvertime(L,count,1.35);
+							}else if(overtimeOpt==3){
+								calculationOvertime(L,count,2);
+							}else{
+								printf("Exit!");
+							}
+							system("CLS");	
+							displayDayInput(*L,-1);
+							break;
+						case 3:
+							
+							printf("\nAre you sure?(Y|N):"); scanf(" %c", &absentOpt); strupr(&absentOpt);
+							if(absentOpt=='Y'){
+								++L->employees[count].Absence;
+								printf("\n%s %s is absent.",L->employees[count].info.empName.fname,L->employees[count].info.empName.lname);
+							}else if(absentOpt=='N'){
+								printf("Incomplete Process");
+							}
+							break;
+						case 4:
+							printf("\nExiting!");
+							break;
+						default:
+							printf("\nInvalid input. Please try again!");
+							break;
+					}
+					
+					if(opt!= 4) {
+					printf("\n\nConfirm edit? [Y/N] "); fflush(stdin); scanf("%c", &ch);	ch = toupper(ch);
+					
+					if(ch == 'Y') {
+						writeEmpList(*L);
+						system("CLS");
+						printf("\nUpdated successfully!\n\n");
+						break;
+					} else {
+						printf("\nNot updated!\n\n");
+						break;
+					}
+				}
+			
+			}else{
+				printf("\nEmployee not found.");
+			}
+		
+			break;
+		case 'N':
+			printf("\nExiting!");
+			break;
+		default:
+			printf("\nInvalid input. Please try again!");
+			break;
+	}
 }
 
-void settings()
+void settings(EmpList *L, PayrollSetting *r)
 {
-	printf("\nSettings!");
+	int ctr, choice, wage,login; 
+
+	while (choice != 4) {
+		system("CLS");
+		printf("************************* SETTING ***************************");
+		printf("\n1. Edit rate of wage");
+		printf("\n2. View current settings");
+		printf("\n3. Edit Login Credentials");
+		printf("\n4. Exit");
+		
+		printf("\n\nWhat do you want to do? "); fflush(stdin); scanf("%d", &choice);
+		
+		switch(choice) {
+			case 1:		
+			//	while(wage != 5){
+					wage = 0;
+					system("CLS");
+					printf("************************* WAGE SETTING ***************************");
+					printf("\n1. Daily");
+					printf("\n2. Weekly");
+					printf("\n3. Bi-monthly");
+					printf("\n4. Monthly");
+					printf("\n5. Exit");
+					
+					printf("\n\nHow often do yo want to pay? "); fflush(stdin); scanf("%d", &wage);
+					switch(wage) {
+						case 1:
+							r->rate = 312;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
+							break;
+						case 2:
+							r->rate = 96;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
+							break;
+						case 3:
+							r->rate = 24;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
+							break;
+						case 4:
+							r->rate = 12;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
+							break;
+						case 5:
+							break;
+						default:
+							printf("\nInvalid input. Please try again.");
+							break;	
+					}
+					
+			//	}
+				
+				for(ctr = 0; ctr < L->count; ctr++) {
+					L->employees[ctr].BasicSalary = L->employees[ctr].PositionRate / r->rate;
+				}
+				printf("Rate has been changed successsfully!");
+				writeSetting(*r);
+				writeEmpList(*L);
+				break;
+			case 2:
+				system("CLS");
+				printf("************************* CURRENT SETTING ***************************");
+				printf("\nCurrent rate of wage is: %d", r->rate);
+				printf("\nUsername: %s", r->username);
+				printf("\nPassword: %s\n", r->password);
+				printf("\n\nPress any key to exit....");
+				getch();
+				break;
+			case 3:
+				system("CLS");
+				printf("************************* LOGIN SETTING ***************************");
+				printf("\n1. Change Username");
+				printf("\n2. Change Password");
+				printf("\n3. Exit");
+				printf("\n\nEnter Option: "); fflush(stdin); scanf("%d", &login);
+				switch(login){
+					case 1:
+						printf("\nNew Username: "); fflush(stdin); scanf("%s", r->username);
+						printf("\nChanged successfully!\n\nPress any key to continue...");
+						getch();
+						break;
+					case 2:
+						printf("\nNew Password: "); fflush(stdin); scanf("%s", r->password);
+						printf("\nChanged successfully!\n\nPress any key to continue...");
+						getch();
+						break;
+					case 3:
+						break;
+					default:
+						printf("\nInvalid input. Please try again.");
+						break;
+				}
+				writeSetting(*r);
+				break;
+			case 4:
+				break;
+			default:
+				printf("\nInvalid input. Please try again.");
+				break;
+		}
+	}
 }
+
+void writeSetting(PayrollSetting r)
+{
+	FILE  *fp;
+	
+	fp = fopen("settings.txt", "wb");
+	
+	if(fp != NULL) {
+		fwrite(&r, sizeof(PayrollSetting), 1, fp);
+		fclose(fp);
+	} else {
+		printf("File not found!");
+	}
+}
+
+PayrollSetting readSetting()
+{
+	FILE *fp;
+	PayrollSetting r;
+	
+	if( access("settings.txt", F_OK ) == 0 ) {
+	    fp = fopen("settings.txt", "rb");
+	    if(fp != NULL) {
+		fread(&r, sizeof(PayrollSetting),1 , fp);
+		fclose(fp);
+		}
+	} else {
+	    strcpy(r.username,"admin");
+		strcpy(r.password,"12345");
+		writeSetting(r);
+	}
+	
+	return r;
+}
+
