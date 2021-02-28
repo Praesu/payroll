@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define SIZE 15
 
@@ -61,10 +62,16 @@ typedef struct {
 
 typedef int Rate;
 
+typedef struct{
+	Rate rate;
+	char username[10];
+	char password[10];
+}PayrollSetting;
+
 void viewEmpList(EmpList *L, Rate r);
 void calculatePayroll();
 void dayInputs(EmpList *L);
-void settings(EmpList *L, Rate *R);
+void settings(EmpList *L, PayrollSetting *r);
 
 void initList(EmpList *L); 
 EmpList populateList(); 
@@ -86,8 +93,8 @@ void insertLast(EmpList *L, EmployeeInfo info);
 void writeEmpInfo(EmployeeInfo e);
 void writeEmpList(EmpList L);
 void calculationOvertime(EmpList *e,int count,float percentOvertime);
-void writeRate(Rate r);
-Rate readRate();
+void writeSetting(PayrollSetting r);
+PayrollSetting readSetting();
 
 int main()
 {
@@ -96,8 +103,8 @@ int main()
     int loginFlag = 0;
     char username[10] ="\0";
     char password[10] ="\0";
-    Rate r;
-    
+    PayrollSetting r;
+    r = readSetting();
     
     do{
 	printf("**************** LOGIN ******************\n");
@@ -108,18 +115,17 @@ int main()
 	    scanf("%s",username);
 	    printf("Enter password:");
 	    scanf("%s",password);
-	    loginFlag = (strcmp(username,"admin")==0 && strcmp(password,"12345")==0)? 1:0;
+	    loginFlag = (strcmp(username,r.username)==0 && strcmp(password,r.password)==0)? 1:0;
 
 	    system("CLS");
 
     }while(loginFlag==0);
-    
+
     if(loginFlag==1){
     	
     printf("*************** PAYROLL SYSTEM ****************\n\n");
 
 	L = populateList();
-	r = readRate();
 	
     while(a != 5) {
     	a = 0;
@@ -135,7 +141,7 @@ int main()
 
 		switch (a) {
 		    case 1: 
-			viewEmpList(&L, r);
+			viewEmpList(&L, r.rate);
 			break;
 		    case 2:
 			calculatePayroll();
@@ -703,22 +709,26 @@ void dayInputs(EmpList *L)
 	}
 }
 
-void settings(EmpList *L, Rate *r)
+void settings(EmpList *L, PayrollSetting *r)
 {
-	int ctr, choice, wage; 
+	int ctr, choice, wage,login; 
 
-	while (choice != 3) {
+	while (choice != 4) {
+		system("CLS");
+		printf("************************* SETTING ***************************");
 		printf("\n1. Edit rate of wage");
 		printf("\n2. View current settings");
-		printf("\n3. Exit");
+		printf("\n3. Edit Login Credentials");
+		printf("\n4. Exit");
 		
 		printf("\n\nWhat do you want to do? "); fflush(stdin); scanf("%d", &choice);
 		
 		switch(choice) {
 			case 1:		
-				while(wage != 5){
+			//	while(wage != 5){
 					wage = 0;
-					
+					system("CLS");
+					printf("************************* WAGE SETTING ***************************");
 					printf("\n1. Daily");
 					printf("\n2. Weekly");
 					printf("\n3. Bi-monthly");
@@ -728,20 +738,24 @@ void settings(EmpList *L, Rate *r)
 					printf("\n\nHow often do yo want to pay? "); fflush(stdin); scanf("%d", &wage);
 					switch(wage) {
 						case 1:
-							*r = 312;
-							printf("\nChanged successfully!");
+							r->rate = 312;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
 							break;
 						case 2:
-							*r = 96;
-							printf("\nChanged successfully!");
+							r->rate = 96;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
 							break;
 						case 3:
-							*r = 24;
-							printf("\nChanged successfully!");
+							r->rate = 24;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
 							break;
 						case 4:
-							*r = 12;
-							printf("\nChanged successfully!");
+							r->rate = 12;
+							printf("\nChanged successfully!\n\nPress any key to continue...");
+							getch();
 							break;
 						case 5:
 							break;
@@ -749,19 +763,52 @@ void settings(EmpList *L, Rate *r)
 							printf("\nInvalid input. Please try again.");
 							break;	
 					}
-				}
+					
+			//	}
 				
 				for(ctr = 0; ctr < L->count; ctr++) {
-					L->employees[ctr].BasicSalary = L->employees[ctr].PositionRate / *r;
+					L->employees[ctr].BasicSalary = L->employees[ctr].PositionRate / r->rate;
 				}
 				printf("Rate has been changed successsfully!");
-				writeRate(*r);
+				writeSetting(*r);
 				writeEmpList(*L);
 				break;
 			case 2:
-				printf("\nCurrent rate of wage is: %d\n", *r);
+				system("CLS");
+				printf("************************* CURRENT SETTING ***************************");
+				printf("\nCurrent rate of wage is: %d", r->rate);
+				printf("\nUsername: %s", r->username);
+				printf("\nPassword: %s\n", r->password);
+				printf("\n\nPress any key to exit....");
+				getch();
 				break;
 			case 3:
+				system("CLS");
+				printf("************************* LOGIN SETTING ***************************");
+				printf("\n1. Change Username");
+				printf("\n2. Change Password");
+				printf("\n3. Exit");
+				printf("\n\nEnter Option: "); fflush(stdin); scanf("%d", &login);
+				switch(login){
+					case 1:
+						printf("\nNew Username: "); fflush(stdin); scanf("%s", r->username);
+						printf("\nChanged successfully!\n\nPress any key to continue...");
+						getch();
+						break;
+					case 2:
+						printf("\nNew Password: "); fflush(stdin); scanf("%s", r->password);
+						printf("\nChanged successfully!\n\nPress any key to continue...");
+						getch();
+						break;
+					case 3:
+						break;
+					default:
+						printf("\nInvalid input. Please try again.");
+						break;
+				}
+				writeSetting(*r);
+				break;
+			case 4:
 				break;
 			default:
 				printf("\nInvalid input. Please try again.");
@@ -770,32 +817,36 @@ void settings(EmpList *L, Rate *r)
 	}
 }
 
-void writeRate(Rate r)
+void writeSetting(PayrollSetting r)
 {
 	FILE  *fp;
 	
 	fp = fopen("settings.txt", "wb");
 	
 	if(fp != NULL) {
-		fwrite(&r, sizeof(Rate), 1, fp);
+		fwrite(&r, sizeof(PayrollSetting), 1, fp);
 		fclose(fp);
 	} else {
 		printf("File not found!");
 	}
 }
 
-Rate readRate()
+PayrollSetting readSetting()
 {
 	FILE *fp;
-	Rate r;
+	PayrollSetting r;
 	
-	fp = fopen("settings.txt", "rb");
-	
-	if(fp != NULL) {
-		fread(&r, sizeof(Rate),1 , fp);
+	if( access("settings.txt", F_OK ) == 0 ) {
+	    fp = fopen("settings.txt", "rb");
+	    if(fp != NULL) {
+		fread(&r, sizeof(PayrollSetting),1 , fp);
 		fclose(fp);
+		}
+	} else {
+	    strcpy(r.username,"admin");
+		strcpy(r.password,"12345");
+		writeSetting(r);
 	}
-		
+	
 	return r;
 }
-
