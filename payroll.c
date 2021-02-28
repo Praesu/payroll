@@ -836,6 +836,7 @@ PayrollSetting readSetting()
 	FILE *fp;
 	PayrollSetting r;
 	
+
 	if( access("settings.txt", F_OK ) == 0 ) {
 	    fp = fopen("settings.txt", "rb");
 	    if(fp != NULL) {
@@ -847,6 +848,6 @@ PayrollSetting readSetting()
 		strcpy(r.password,"12345");
 		writeSetting(r);
 	}
-	
+
 	return r;
 }
