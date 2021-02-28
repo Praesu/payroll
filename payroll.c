@@ -71,7 +71,7 @@ typedef struct{
 void viewEmpList(EmpList *L, Rate r);
 void calculatePayroll();
 void dayInputs(EmpList *L);
-void settings(EmpList *L, PayrollSetting *R);
+void settings(EmpList *L, PayrollSetting *r);
 
 void initList(EmpList *L); 
 EmpList populateList(); 
@@ -126,7 +126,6 @@ int main()
     printf("*************** PAYROLL SYSTEM ****************\n\n");
 
 	L = populateList();
-	
 	
     while(a != 5) {
     	a = 0;
@@ -837,8 +836,7 @@ PayrollSetting readSetting()
 	FILE *fp;
 	PayrollSetting r;
 	
-	
-	
+
 	if( access("settings.txt", F_OK ) == 0 ) {
 	    fp = fopen("settings.txt", "rb");
 	    if(fp != NULL) {
@@ -850,7 +848,6 @@ PayrollSetting readSetting()
 		strcpy(r.password,"12345");
 		writeSetting(r);
 	}
-	
-		
+
 	return r;
 }
